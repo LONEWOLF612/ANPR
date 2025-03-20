@@ -177,6 +177,7 @@ artifacts/*
 *.zip
 test/*
 train/*
+*.yaml
 *.jpg
 *.png
 data/*.jpg
