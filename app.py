@@ -299,5 +299,5 @@ def video_feed():
 
 if __name__ == "__main__":
     clApp = ClientApp()
-    port = int(os.environ.get("PORT", 8080))  # fallback to 8000 for local dev
-    app.run(host="0.0.0.0", port=port)
+    # port = int(os.environ.get("PORT", 8080))  # fallback to 8000 for local dev
+    app.run(host="0.0.0.0", debug=True)
