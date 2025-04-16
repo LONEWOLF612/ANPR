@@ -4,7 +4,7 @@ import time
 import os
 from licensePlateDetection.pipeline.training_pipeline import TrainPipeline
 from licensePlateDetection.utils.main_utils import decodeImage, encodeImageIntoBase64
-from flask import Flask, request, jsonify, render_template, send_from_directory, Response
+from flask import Flask, request, jsonify, render_template, Response
 from flask_cors import CORS, cross_origin
 from licensePlateDetection.constant.application import APP_HOST, APP_PORT
 from licensePlateDetection.Database.anpr_database import ANPD_DB
@@ -24,8 +24,7 @@ import cv2
 import subprocess
 import uuid
 import traceback
-
-app = Flask(__name__, static_folder="../frontend/dist", static_url_path="/")
+app = Flask(__name__)
 CORS(app)
 
 
@@ -33,12 +32,9 @@ class ClientApp:
     def __init__(self):
         self.filename = "inputImage.jpg"
 
-# Deployment part for vercel which was used to serve the frontend on port 8000(backend)
-@app.route("/")
-def home():
-    return send_from_directory(app.static_folder, "index.html")
-
-
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 # training model 
 @app.route("/train")
@@ -161,7 +157,6 @@ def predictRoute():
         if os.path.exists("yolov5/runs"):
             shutil.rmtree("yolov5/runs", ignore_errors=True)
         return Response(f"Internal server error: {str(e)}", status=500)
-
 
    
 
@@ -296,8 +291,7 @@ def video_feed():
 
     return Response(generate(), mimetype='text/event-stream')
 
-
+     
 if __name__ == "__main__":
     clApp = ClientApp()
-    # port = int(os.environ.get("PORT", 8080))  # fallback to 8000 for local dev
-    app.run(host="0.0.0.0", debug=True)
+    app.run(host=APP_HOST, port=8000)
