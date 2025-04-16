@@ -296,7 +296,8 @@ def video_feed():
 
     return Response(generate(), mimetype='text/event-stream')
 
-     
+
 if __name__ == "__main__":
     clApp = ClientApp()
-    app.run(host=APP_HOST, port=8000)
+    port = int(os.environ.get("PORT", 8000))  # fallback to 8000 for local dev
+    app.run(host="0.0.0.0", port=port)
